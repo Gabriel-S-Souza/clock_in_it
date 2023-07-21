@@ -1,32 +1,27 @@
-
 import 'package:flutter/material.dart';
 
+import '../../features/auth/presentation/view/login_screen.dart';
 import 'route_names.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case RouteNames.home:
-        return MaterialPageRoute(
-          builder: (_) => Container(child: const Text('Home')),
-          settings: settings,
-        );
-      
       case RouteNames.login:
+      case RouteNames.initial:
         return MaterialPageRoute(
-          builder: (_) => Container(child: const Text('Login')),
+          builder: (_) => LoginScreen(),
           settings: settings,
         );
-      
+
       case RouteNames.employees:
         return MaterialPageRoute(
-          builder: (_) => Container(child: const Text('Employees')),
+          builder: (_) => const Scaffold(body: Text('Employees')),
           settings: settings,
         );
-      
+
       case RouteNames.employeeDetails:
         return MaterialPageRoute(
-          builder: (_) => Container(child: const Text('Employees Details')),
+          builder: (_) => const Scaffold(body: Text('Employees Details')),
           settings: settings,
         );
 

@@ -19,7 +19,7 @@ class SecureLocalStorageImp implements SecureLocalStorage {
   }
 
   @override
-  Future<void> set({required String key, required String value}) =>
+  Future<void> set(String key, String value) =>
       _storage.write(key: key, value: value, iOptions: options);
 
   @override
