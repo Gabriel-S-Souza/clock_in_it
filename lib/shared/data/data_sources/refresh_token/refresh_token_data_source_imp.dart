@@ -1,7 +1,6 @@
 import '../../../../setup/http/http_client.dart';
 import '../../../domain/entities/failure/failure.dart';
 import '../../../domain/entities/result/result.dart';
-import '../../models/auth/auth_model.dart';
 import '../secure_local_storage/secure_local_storage.dart';
 import 'refresh_token_data_source.dart';
 
@@ -16,7 +15,7 @@ class RefreshTokenDataSourceImp implements RefreshTokenDataSource {
         _secureLocalStorage = secureLocalStorage;
 
   @override
-  Future<Result<AuthModel>> call() async {
+  Future<VoidSuccess> call() async {
     try {
       final response = await _httpClient.post(
         '/refresh-token',
@@ -26,10 +25,9 @@ class RefreshTokenDataSourceImp implements RefreshTokenDataSource {
       );
 
       if (response.isSuccess) {
-        final auth = AuthModel.fromJson(response.data);
-        _secureLocalStorage.set('accessToken', auth.accessToken);
-        _secureLocalStorage.set('refreshToken', auth.refreshToken);
-        return Result.success(auth);
+        await _secureLocalStorage.set('accessToken', response.data['access-token']);
+        await _secureLocalStorage.set('refreshToken', response.data['refresh-token']);
+        return Result.voidSuccess();
       } else {
         return Result.failure(const ServerFailure());
       }

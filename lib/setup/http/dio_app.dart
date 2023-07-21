@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../shared/data/data_sources/refresh_token/refresh_token_data_source.dart';
+import '../../shared/data/data_sources/secure_local_storage/secure_local_storage.dart';
 import '../service_locator/service_locator_imp.dart';
 
 part 'mock_token_interceptor.dart';
@@ -40,7 +41,7 @@ Future<void> _checkTokenInterceptor(
   final authorization = options.headers['Authorization'] as String?;
   final token = authorization?.split(' ').lastOrNull;
 
-  if (token == null || !_validateToken(token)) {
+  if (!_validateFormatToken(token)) {
     handler.reject(
       DioException(
         requestOptions: options,
@@ -52,14 +53,17 @@ Future<void> _checkTokenInterceptor(
       ),
     );
   } else {
-    if (JwtDecoder.isExpired(token)) {
-      final RefreshTokenDataSource refreshTokenDataSource =
-          ServiceLocatorImp.I.get<RefreshTokenDataSource>();
+    if (JwtDecoder.isExpired(token!)) {
+      final refreshTokenDataSource = ServiceLocatorImp.I.get<RefreshTokenDataSource>();
+
+      final secureLocalStorage = ServiceLocatorImp.I.get<SecureLocalStorage>();
 
       final response = await refreshTokenDataSource.call();
+      final newAccessToken = await secureLocalStorage.get('accessToken');
 
       if (response.isSuccess) {
-        options.headers['Authorization'] = 'Bearer ${response.data.accessToken}';
+        options.headers['Authorization'] = 'Bearer $newAccessToken';
+        print('Updated token: $newAccessToken');
         handler.next(options);
         return;
       }
@@ -68,8 +72,9 @@ Future<void> _checkTokenInterceptor(
   }
 }
 
-bool _validateToken(String token) {
+bool _validateFormatToken(String? token) {
   try {
+    if (token == null) return false;
     final decodedToken = JwtDecoder.decode(token);
     return decodedToken.runtimeType == Map<String, dynamic>;
   } catch (e) {

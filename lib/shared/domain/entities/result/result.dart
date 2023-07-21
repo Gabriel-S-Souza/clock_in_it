@@ -7,21 +7,25 @@ class Result<T> {
 
   const Result._(this._data, this._failure, [this._cachedData]);
   factory Result.success(T data) => Result._(data, null);
+  factory Result.voidSuccess() => Result._(1 as T, null);
   factory Result.failure(Failure failure, [T? cachedData]) => Result._(null, failure, cachedData);
 
   T get data => _data!;
   T? get cachedData => _cachedData;
-  bool get isSuccess => _data != null;
   Failure get failure => _failure!;
+
+  bool get isSuccess => _data != null;
 
   void when({
     required void Function(T data) onSuccess,
     void Function(Failure failure, T? cachedData)? onFailure,
   }) {
-    if (_data != null) {
+    if (isSuccess) {
       onSuccess(data);
     } else {
       onFailure?.call(failure, cachedData);
     }
   }
 }
+
+typedef VoidSuccess = Result<dynamic>;

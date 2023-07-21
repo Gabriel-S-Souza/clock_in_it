@@ -36,14 +36,13 @@ class ServiceLocatorImp implements ServiceLocator {
     // http
     registerFactory<HttpClient>(() => HttpClient(dioApp));
 
-    // local storage
+    // data sources
     final localStorage = LocalStorageImp();
     await localStorage.init();
     registerFactory<LocalStorage>(() => localStorage);
 
     registerFactory<SecureLocalStorage>(() => SecureLocalStorageImp(const FlutterSecureStorage()));
 
-    // data sources
     registerFactory<AuthDataSource>(() => AuthDataSourceImp(
           httpClient: get(),
           secureLocalStorage: get(),

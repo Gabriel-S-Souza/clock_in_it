@@ -5,10 +5,29 @@ Future<void> _mockTokenInterceptor(
   RequestOptions options,
   RequestInterceptorHandler handler,
 ) async {
-  if (options.path.contains('refresh-token')) {
-    final username = options.data['username'];
+  if (options.path.contains('refresh-token') || options.path.contains('login')) {
+    final refreshToken = options.data['refresh-token'];
+    final isRefreshEndpoint = options.path.contains('refresh-token');
+    if (isRefreshEndpoint && !_validateFormatToken(refreshToken)) {
+      handler.reject(
+        DioException(
+          requestOptions: options,
+          response: Response(
+            statusCode: 401,
+            data: 'Invalid token format',
+            requestOptions: options,
+          ),
+        ),
+      );
+      return;
+    }
+
+    final username = isRefreshEndpoint //
+        ? JwtDecoder.decode(refreshToken)['username']
+        : options.data['username'];
+
     final newToken = _createJwt({'username': username});
-    final refreshToken = _createJwt(
+    final newRefreshToken = _createJwt(
       {'username': username},
       isRefresh: true,
     );
@@ -20,26 +39,11 @@ Future<void> _mockTokenInterceptor(
           'id': 1,
           'username': username,
           'access-token': newToken,
-          'refresh-token': refreshToken,
+          'refresh-token': newRefreshToken,
         },
       ),
     );
     return;
-  } else if (options.path.contains('login')) {
-    final token = _createJwt(options.data);
-    final refreshToken = _createJwt(options.data, isRefresh: true);
-    handler.resolve(
-      Response(
-        requestOptions: options,
-        statusCode: 200,
-        data: {
-          'id': 1,
-          'username': options.data['username'],
-          'access-token': token,
-          'refresh-token': refreshToken,
-        },
-      ),
-    );
   } else {
     handler.next(options);
   }

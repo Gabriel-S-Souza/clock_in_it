@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               );
             } else if (state is LoginSuccess) {
-              Navigator.of(context).pushNamed(RouteNames.employees);
+              Navigator.of(context).pushReplacementNamed(RouteNames.employees);
             }
           },
           child: BlocBuilder(
