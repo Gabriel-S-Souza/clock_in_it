@@ -1,0 +1,27 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    avoid_print: false 
+    prefer_single_quotes: true  
+    prefer_relative_imports: true
+    avoid_dynamic_calls: false
+    always_declare_return_types: true
+    avoid_catches_without_on_clauses: false
+    directives_ordering: true
+    flutter_style_todos: true
+    lines_longer_than_80_chars: false
+    prefer_expression_function_bodies: true
+    prefer_interpolation_to_compose_strings: true
+    sort_constructors_first: false
+    prefer_final_locals: true
+    unnecessary_await_in_return: true
+    unnecessary_const: true
+    unnecessary_lambdas: false
+    unnecessary_late: true
+    unnecessary_null_aware_assignments: true
+    unnecessary_parenthesis: true
+    depend_on_referenced_packages: true
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
