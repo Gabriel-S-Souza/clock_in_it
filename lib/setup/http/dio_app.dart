@@ -2,6 +2,10 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
 import 'package:dio/dio.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+
+import '../../shared/data/data_sources/refresh_token/refresh_token_data_source.dart';
+import '../service_locator/service_locator_imp.dart';
 
 const _baseUrl = 'https://carma.fun';
 const _basePath = '/api/dasa';
@@ -12,10 +16,65 @@ final dioApp = Dio(
     connectTimeout: const Duration(seconds: 10),
     receiveTimeout: const Duration(seconds: 10),
   ),
-)..interceptors.add(InterceptorsWrapper(onRequest: _mockToken));
+)..interceptors.addAll([
+    LogInterceptor(
+      request: true,
+      requestHeader: true,
+      requestBody: true,
+      responseHeader: true,
+      responseBody: true,
+    ),
+    InterceptorsWrapper(onRequest: _checkToken),
+    InterceptorsWrapper(onRequest: _mockToken),
+  ]);
 
-//
-//
+Future<void> _checkToken(RequestOptions options, RequestInterceptorHandler handler) async {
+  if (options.path.contains('login') || options.path.contains('refresh-token')) {
+    handler.next(options);
+    return;
+  }
+  final authorization = options.headers['Authorization'] as String?;
+  final token = authorization?.split(' ').lastOrNull;
+  if (token == null || !validateToken(token)) {
+    print('Token not found');
+    handler.reject(
+      DioException(
+        requestOptions: options,
+        response: Response(
+          statusCode: 401,
+          data: 'Token not found',
+          requestOptions: options,
+        ),
+      ),
+    );
+  } else {
+    if (JwtDecoder.isExpired(token)) {
+      final RefreshTokenDataSource refreshTokenDataSource =
+          ServiceLocatorImp.I.get<RefreshTokenDataSource>();
+      final response = await refreshTokenDataSource.call();
+      if (!response.isSuccess) {
+        handler.reject(
+          DioException.badResponse(
+            statusCode: 500,
+            requestOptions: options,
+            response: Response(data: response.failure.message, requestOptions: options),
+          ),
+        );
+      }
+      handler.next(options);
+    }
+  }
+}
+
+bool validateToken(String token) {
+  try {
+    final decodedToken = JwtDecoder.decode(token);
+    return decodedToken.runtimeType == Map<String, dynamic>;
+  } catch (e) {
+    return false;
+  }
+}
+
 // logic to simulate token return
 Future<void> _mockToken(RequestOptions options, RequestInterceptorHandler handler) async {
   if (options.path.contains('refresh-token')) {
@@ -28,8 +87,11 @@ Future<void> _mockToken(RequestOptions options, RequestInterceptorHandler handle
     handler.resolve(
       Response(
         requestOptions: options,
+        statusCode: 200,
         data: {
-          'auth-token': newToken,
+          'id': 1,
+          'username': username,
+          'access-token': newToken,
           'refresh-token': refreshToken,
         },
       ),
@@ -41,12 +103,17 @@ Future<void> _mockToken(RequestOptions options, RequestInterceptorHandler handle
     handler.resolve(
       Response(
         requestOptions: options,
+        statusCode: 200,
         data: {
-          'auth-token': token,
+          'id': 1,
+          'username': options.data['username'],
+          'access-token': token,
           'refresh-token': refreshToken,
         },
       ),
     );
+  } else {
+    handler.next(options);
   }
 }
 
@@ -68,6 +135,5 @@ String _createToken(dynamic data, {bool isRefresh = false}) {
   final digest =
       Hmac(sha256, utf8.encode(secret)).convert('$headerBase64.$payloadBase64'.codeUnits);
   final sign = base64UrlEncode(digest.bytes);
-  print('jwt: $headerBase64.$payloadBase64.$sign');
   return '$headerBase64.$payloadBase64.$sign';
 }
