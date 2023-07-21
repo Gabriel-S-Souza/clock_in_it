@@ -3,6 +3,7 @@ import '../repositories/local_storage_repository.dart';
 
 abstract class LocalStorageUseCase {
   Future<bool> saveUser(UserEntity user);
+  UserEntity? getUser();
   Future<bool> set({required String key, required String value});
   Future<bool> setList({required String key, required List<String> value});
   String? get(String key);
@@ -18,6 +19,9 @@ class LocalStorageUseCaseImp implements LocalStorageUseCase {
 
   @override
   Future<bool> saveUser(UserEntity user) async => _repository.saveUser(user);
+
+  @override
+  UserEntity? getUser() => _repository.getUser();
 
   @override
   Future<bool> set({required String key, required String value}) async =>

@@ -1,4 +1,5 @@
 import '../../../../setup/http/http_client.dart';
+import '../../../../setup/utils/api_paths.dart';
 import '../../../domain/entities/failure/failure.dart';
 import '../../../domain/entities/result/result.dart';
 import '../secure_local_storage/secure_local_storage.dart';
@@ -18,7 +19,7 @@ class RefreshTokenDataSourceImp implements RefreshTokenDataSource {
   Future<VoidSuccess> call() async {
     try {
       final response = await _httpClient.post(
-        '/refresh-token',
+        ApiPaths.refreshToken,
         body: {
           'refresh-token': _secureLocalStorage.get('refreshToken'),
         },

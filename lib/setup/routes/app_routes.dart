@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../features/auth/presentation/view/login_screen.dart';
+import '../../features/employee/presentation/view/screens/employees_screen.dart';
 import 'route_names.dart';
 
 class AppRoutes {
@@ -15,7 +16,7 @@ class AppRoutes {
 
       case RouteNames.employees:
         return MaterialPageRoute(
-          builder: (_) => const Scaffold(body: Text('Employees')),
+          builder: (_) => const EmployeesScreen(),
           settings: settings,
         );
 

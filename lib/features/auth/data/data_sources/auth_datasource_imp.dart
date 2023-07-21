@@ -1,4 +1,5 @@
 import '../../../../setup/http/http_client.dart';
+import '../../../../setup/utils/api_paths.dart';
 import '../../../../shared/data/data_sources/secure_local_storage/secure_local_storage.dart';
 import '../../../../shared/data/models/user/user_model.dart';
 import '../../../../shared/domain/entities/failure/failure.dart';
@@ -20,7 +21,7 @@ class AuthDataSourceImp implements AuthDataSource {
   Future<Result<UserModel>> login(LoginCredentialsModel credentials) async {
     try {
       final response = await _httpClient.post(
-        '/login',
+        ApiPaths.login,
         body: credentials.toJson(),
       );
       if (response.isSuccess) {
@@ -37,11 +38,5 @@ class AuthDataSourceImp implements AuthDataSource {
     } catch (e) {
       return Result.failure(UnmappedFailure(e.toString()));
     }
-  }
-
-  @override
-  Future<Result<void>> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
   }
 }

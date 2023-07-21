@@ -4,5 +4,4 @@ import '../models/login_credentials_model.dart';
 
 abstract class AuthDataSource {
   Future<Result<UserEntity>> login(LoginCredentialsModel credentials);
-  Future<Result<void>> logout();
 }

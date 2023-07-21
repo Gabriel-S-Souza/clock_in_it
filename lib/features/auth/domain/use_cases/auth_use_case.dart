@@ -5,7 +5,6 @@ import '../repositories/auth_repository.dart';
 
 abstract class AuthUseCase {
   Future<Result<UserEntity>> login(LoginCredentialsEntity credentials);
-  Future<Result<void>> logout();
 }
 
 class AuthUseCaseImp implements AuthUseCase {
@@ -16,7 +15,4 @@ class AuthUseCaseImp implements AuthUseCase {
   @override
   Future<Result<UserEntity>> login(LoginCredentialsEntity credentials) =>
       _repository.login(credentials);
-
-  @override
-  Future<Result<void>> logout() => _repository.logout();
 }
