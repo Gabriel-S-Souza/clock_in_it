@@ -6,7 +6,7 @@ Future<void> _mockTokenInterceptor(
   RequestInterceptorHandler handler,
 ) async {
   if (options.path.contains('refresh-token') || options.path.contains('login')) {
-    final refreshToken = options.data['refresh-token'];
+    final refreshToken = await options.data['refresh-token'];
     final isRefreshEndpoint = options.path.contains('refresh-token');
     if (isRefreshEndpoint && !_validateFormatToken(refreshToken)) {
       handler.reject(
@@ -60,12 +60,18 @@ String _createJwt(dynamic data, {bool isRefresh = false}) {
     'name': data['username'],
     'exp': isRefresh //
         ? null
-        : DateTime.now().millisecondsSinceEpoch + 60000,
+        : DateTime.now().add(const Duration(seconds: 30)).millisecondsSinceEpoch,
   };
   final payloadBase64 = base64UrlEncode(jsonEncode(payload).codeUnits);
   const secret = 'secret';
   final digest =
       Hmac(sha256, utf8.encode(secret)).convert('$headerBase64.$payloadBase64'.codeUnits);
   final sign = base64UrlEncode(digest.bytes);
+  if (!isRefresh) {
+    log('generated token now!!!!!: $headerBase64.$payloadBase64.$sign');
+    final expireIn = DateTime.fromMillisecondsSinceEpoch(payload['exp'] as int);
+    log('expire in: $expireIn');
+    log('expire in: ${expireIn.difference(DateTime.now()).inSeconds} seconds');
+  }
   return '$headerBase64.$payloadBase64.$sign';
 }

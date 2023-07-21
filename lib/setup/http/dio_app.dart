@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:crypto/crypto.dart';
 
 import 'package:dio/dio.dart';
@@ -24,7 +25,7 @@ final dioApp = Dio(
       request: true,
       requestHeader: true,
       requestBody: true,
-      responseHeader: true,
+      responseHeader: false,
       responseBody: true,
     ),
     InterceptorsWrapper(onRequest: _checkTokenInterceptor),
@@ -38,10 +39,18 @@ Future<void> _checkTokenInterceptor(
     return;
   }
 
-  final authorization = options.headers['Authorization'] as String?;
+  log('path: ${options.path}');
+  log('uri: ${options.uri}');
+  log('headers: ${options.headers}');
+
+  final authorization = options.headers['authorization'] as String?;
+  log('authorization: $authorization');
   final token = authorization?.split(' ').lastOrNull;
 
+  log('Token: $token');
+
   if (!_validateFormatToken(token)) {
+    log('Invalid token');
     handler.reject(
       DioException(
         requestOptions: options,
@@ -53,7 +62,9 @@ Future<void> _checkTokenInterceptor(
       ),
     );
   } else {
-    if (JwtDecoder.isExpired(token!)) {
+    final isExpired = _isTokenExpired(token);
+    if (isExpired) {
+      log('Expired token');
       final refreshTokenDataSource = ServiceLocatorImp.I.get<RefreshTokenDataSource>();
 
       final secureLocalStorage = ServiceLocatorImp.I.get<SecureLocalStorage>();
@@ -62,8 +73,8 @@ Future<void> _checkTokenInterceptor(
       final newAccessToken = await secureLocalStorage.get('accessToken');
 
       if (response.isSuccess) {
-        options.headers['Authorization'] = 'Bearer $newAccessToken';
-        print('Updated token: $newAccessToken');
+        options.headers['authorization'] = 'Bearer $newAccessToken';
+        log('Updated token: $newAccessToken');
         handler.next(options);
         return;
       }
@@ -72,12 +83,22 @@ Future<void> _checkTokenInterceptor(
   }
 }
 
+bool _isTokenExpired(String? token) {
+  final decodedToken = JwtDecoder.decode(token!);
+  final expireIn = DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] as int);
+  final remainingTime = expireIn.difference(DateTime.now()).inSeconds;
+  log('Expired token ?????? ${remainingTime < 0}');
+  final String expiresIn = 'Expires In ${expireIn.difference(DateTime.now()).inSeconds} seconds';
+  log(expiresIn);
+  return remainingTime < 0;
+}
+
 bool _validateFormatToken(String? token) {
   try {
     if (token == null) return false;
     final decodedToken = JwtDecoder.decode(token);
-    return decodedToken.runtimeType == Map<String, dynamic>;
+    return decodedToken.isNotEmpty;
   } catch (e) {
-    return false;
+    rethrow;
   }
 }
