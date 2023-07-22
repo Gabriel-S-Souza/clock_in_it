@@ -30,7 +30,6 @@ class AuthDataSourceImp implements AuthDataSource {
         final user = UserModel.fromJson(response.data);
         return Result.success(user);
       } else {
-        print('error not success ${response.statusCode}');
         return Result.failure(const ServerFailure());
       }
     } on Failure catch (e) {

@@ -48,3 +48,4 @@ linux/
 macos/
 windows/
 .fvm/flutter_sdk
+coverage/
