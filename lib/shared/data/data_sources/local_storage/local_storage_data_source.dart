@@ -1,8 +1,4 @@
-import '../entities/user/user_entity.dart';
-
-abstract class LocalStorageRepository {
-  Future<bool> saveUser(UserEntity user);
-  UserEntity? getUser();
+abstract class LocalStorageDataSource {
   Future<bool> set(String key, {required String value});
   Future<bool> setList(String key, {required List<String> value});
   String? get(String key);

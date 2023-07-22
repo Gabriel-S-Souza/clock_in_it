@@ -1,17 +1,17 @@
 import 'dart:convert';
 
-import '../models/user/user_model.dart';
 import '../../domain/entities/user/user_entity.dart';
 import '../../domain/repositories/local_storage_repository.dart';
-import '../data_sources/local_storage/local_storage.dart';
+import '../data_sources/local_storage/local_storage_data_source.dart';
+import '../models/user/user_model.dart';
 
 class LocalStorageRepositoryImp implements LocalStorageRepository {
-  final LocalStorage _localStorageDataSource;
+  final LocalStorageDataSource _localStorageDataSource;
 
   LocalStorageRepositoryImp(this._localStorageDataSource);
 
   @override
-  Future<bool> delete({required String key}) => _localStorageDataSource.delete(key: key);
+  Future<bool> delete(String key) => _localStorageDataSource.delete(key);
 
   @override
   Future<bool> deleteAll() => _localStorageDataSource.deleteAll();
@@ -24,7 +24,7 @@ class LocalStorageRepositoryImp implements LocalStorageRepository {
 
   @override
   Future<bool> saveUser(UserEntity user) => _localStorageDataSource.set(
-        key: 'user',
+        'user',
         value: jsonEncode({
           'id': user.id,
           'username': user.name,
@@ -42,10 +42,10 @@ class LocalStorageRepositoryImp implements LocalStorageRepository {
   }
 
   @override
-  Future<bool> set({required String key, required String value}) =>
-      _localStorageDataSource.set(key: key, value: value);
+  Future<bool> set(String key, {required String value}) =>
+      _localStorageDataSource.set(key, value: value);
 
   @override
-  Future<bool> setList({required String key, required List<String> value}) =>
-      _localStorageDataSource.setList(key: key, value: value);
+  Future<bool> setList(String key, {required List<String> value}) =>
+      _localStorageDataSource.setList(key, value: value);
 }

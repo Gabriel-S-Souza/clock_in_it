@@ -12,8 +12,8 @@ import '../../features/employee/data/repositories/employee_repository_imp.dart';
 import '../../features/employee/domain/repositories/employee_repository.dart';
 import '../../features/employee/domain/use_cases/employee_use_case.dart';
 import '../../features/employee/presentation/blocs/employees/employees_bloc.dart';
-import '../../shared/data/data_sources/local_storage/local_storage.dart';
-import '../../shared/data/data_sources/local_storage/local_storage_imp.dart';
+import '../../shared/data/data_sources/local_storage/local_storage_data_source.dart';
+import '../../shared/data/data_sources/local_storage/local_storage_data_source_imp.dart';
 import '../../shared/data/data_sources/refresh_token/refresh_token_data_source.dart';
 import '../../shared/data/data_sources/refresh_token/refresh_token_data_source_imp.dart';
 import '../../shared/data/data_sources/secure_local_storage/secure_local_storage.dart';
@@ -43,9 +43,9 @@ class ServiceLocatorImp implements ServiceLocator {
     registerFactory<HttpClient>(() => HttpClient(dioApp));
 
     // data sources
-    final localStorage = LocalStorageImp();
+    final localStorage = LocalStorageDataSourceImp();
     await localStorage.init();
-    registerFactory<LocalStorage>(() => localStorage);
+    registerFactory<LocalStorageDataSource>(() => localStorage);
 
     registerFactory<SecureLocalStorage>(() => SecureLocalStorageImp(const FlutterSecureStorage()));
 

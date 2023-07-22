@@ -4,11 +4,11 @@ import '../repositories/local_storage_repository.dart';
 abstract class LocalStorageUseCase {
   Future<bool> saveUser(UserEntity user);
   UserEntity? getUser();
-  Future<bool> set({required String key, required String value});
-  Future<bool> setList({required String key, required List<String> value});
+  Future<bool> set(String key, {required String value});
+  Future<bool> setList(String key, {required List<String> value});
   String? get(String key);
   List<String>? getList(String key);
-  Future<bool> delete({required String key});
+  Future<bool> delete(String key);
   Future<bool> deleteAll();
 }
 
@@ -24,12 +24,11 @@ class LocalStorageUseCaseImp implements LocalStorageUseCase {
   UserEntity? getUser() => _repository.getUser();
 
   @override
-  Future<bool> set({required String key, required String value}) async =>
-      _repository.set(key: key, value: value);
+  Future<bool> set(String key, {required String value}) async => _repository.set(key, value: value);
 
   @override
-  Future<bool> setList({required String key, required value}) async =>
-      _repository.setList(key: key, value: value);
+  Future<bool> setList(String key, {required value}) async =>
+      _repository.setList(key, value: value);
 
   @override
   String? get(String key) => _repository.get(key);
@@ -38,7 +37,7 @@ class LocalStorageUseCaseImp implements LocalStorageUseCase {
   List<String>? getList(String key) => _repository.getList(key);
 
   @override
-  Future<bool> delete({required String key}) async => _repository.delete(key: key);
+  Future<bool> delete(String key) async => _repository.delete(key);
 
   @override
   Future<bool> deleteAll() async => _repository.deleteAll();
