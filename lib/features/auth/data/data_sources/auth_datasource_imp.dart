@@ -25,8 +25,8 @@ class AuthDataSourceImp implements AuthDataSource {
         body: credentials.toJson(),
       );
       if (response.isSuccess) {
-        _secureLocalStorage.set('accessToken', response.data['access-token']);
-        _secureLocalStorage.set('refreshToken', response.data['refresh-token']);
+        await _secureLocalStorage.set('accessToken', response.data['access-token']);
+        await _secureLocalStorage.set('refreshToken', response.data['refresh-token']);
         final user = UserModel.fromJson(response.data);
         return Result.success(user);
       } else {
