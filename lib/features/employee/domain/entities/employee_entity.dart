@@ -1,9 +1,11 @@
+import 'dart:typed_data';
+
 class EmployeeEntity {
   String id;
   String name;
   int personalId;
   List<List<double>> biometric;
-  List<int> pic;
+  Uint8List pic;
   DateTime createdAt;
 
   EmployeeEntity({

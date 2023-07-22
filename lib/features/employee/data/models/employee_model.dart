@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import '../../domain/entities/employee_entity.dart';
 
 class EmployeeModel extends EmployeeEntity {
@@ -16,8 +19,12 @@ class EmployeeModel extends EmployeeEntity {
         personalId: json['personalId'],
         biometric: List<List<double>>.from(
             json['biometric'].map((x) => List<double>.from(x.map((x) => x.toDouble())))),
-        //  List<int>
-        pic: List<int>.from(json['pic']['data']),
+        pic: _decodeImage(List<int>.from(json['pic']['data'])),
         createdAt: DateTime.parse(json['createdAt']),
       );
+
+  static Uint8List _decodeImage(List<int> imageData) {
+    final base64String = String.fromCharCodes(imageData);
+    return base64Decode(base64String.replaceAll('data:image/png;base64,', ''));
+  }
 }

@@ -1,4 +1,4 @@
-part of 'dio_app.dart';
+part of '../dio_app.dart';
 
 // logic to simulate token return
 Future<void> _mockTokenInterceptor(
@@ -26,8 +26,8 @@ Future<void> _mockTokenInterceptor(
         ? JwtDecoder.decode(refreshToken)['username']
         : options.data['username'];
 
-    final newToken = _createJwt({'username': username});
-    final newRefreshToken = _createJwt(
+    final newToken = _generateJwt({'username': username});
+    final newRefreshToken = _generateJwt(
       {'username': username},
       isRefresh: true,
     );
@@ -49,7 +49,7 @@ Future<void> _mockTokenInterceptor(
   }
 }
 
-String _createJwt(dynamic data, {bool isRefresh = false}) {
+String _generateJwt(dynamic data, {bool isRefresh = false}) {
   final header = {
     'alg': 'HS256',
     'typ': 'JWT',
@@ -68,9 +68,8 @@ String _createJwt(dynamic data, {bool isRefresh = false}) {
       Hmac(sha256, utf8.encode(secret)).convert('$headerBase64.$payloadBase64'.codeUnits);
   final sign = base64UrlEncode(digest.bytes);
   if (!isRefresh) {
-    log('generated token now!!!!!: $headerBase64.$payloadBase64.$sign');
+    log('generated token now: $headerBase64.$payloadBase64.$sign');
     final expireIn = DateTime.fromMillisecondsSinceEpoch(payload['exp'] as int);
-    log('expire in: $expireIn');
     log('expire in: ${expireIn.difference(DateTime.now()).inSeconds} seconds');
   }
   return '$headerBase64.$payloadBase64.$sign';

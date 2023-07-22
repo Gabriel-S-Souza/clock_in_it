@@ -30,7 +30,6 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
-                // TODO: Implement logout
                 Navigator.of(context).pushNamedAndRemoveUntil(
                   RouteNames.login,
                   (route) => false,
@@ -39,48 +38,65 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
             ),
           ],
         ),
-        body: BlocBuilder<EmployeesBloc, EmployeesState>(
-          bloc: employeesBloc,
-          builder: (context, state) {
-            if (state is EmployeesLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is EmployeesSuccess) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  employeesBloc.getEmployees();
-                },
-                child: ListView.builder(
-                  itemCount: state.employees.length,
-                  itemBuilder: (context, index) {
-                    final employee = state.employees[index];
-                    return ListTile(
-                      title: Text(employee.name),
-                      minVerticalPadding: 24,
-                      subtitle: Text(employee.personalId.toString()),
-                    );
-                  },
-                ),
-              );
-            } else if (state is EmployeesError) {
-              return RefreshIndicator(
-                  onRefresh: () async {
-                    employeesBloc.getEmployees();
-                  },
-                  child: ListView(
-                    children: [
-                      Center(
-                        child: Center(
-                          child: Text(state.message),
-                        ),
-                      ),
-                    ],
-                  ));
-            } else {
-              return const SizedBox();
-            }
-          },
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: BlocListener<EmployeesBloc, EmployeesState>(
+            bloc: employeesBloc,
+            listener: (context, state) {
+              if (state is EmployeesError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            child: BlocBuilder<EmployeesBloc, EmployeesState>(
+              bloc: employeesBloc,
+              builder: (context, state) {
+                if (state is EmployeesLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is EmployeesSuccess) {
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      employeesBloc.getEmployees();
+                    },
+                    child: ListView.builder(
+                      itemCount: state.employees.length,
+                      itemBuilder: (context, index) {
+                        final employee = state.employees[index];
+                        return ListTile(
+                          title: Text(employee.name),
+                          minVerticalPadding: 24,
+                          subtitle: Text(employee.personalId.toString()),
+                          trailing: CircleAvatar(
+                            backgroundImage: MemoryImage(employee.pic),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else if (state is EmployeesError) {
+                  return RefreshIndicator(
+                      onRefresh: () async {
+                        employeesBloc.getEmployees();
+                      },
+                      child: ListView(
+                        children: [
+                          Center(
+                            child: SelectableText(state.message),
+                          ),
+                        ],
+                      ));
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
+          ),
         ),
       );
 }
