@@ -101,7 +101,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                               trailing: CircleAvatar(
                                 backgroundImage: MemoryImage(employee.pic),
                               ),
-                              onTap: () => context.pushNamed(
+                              onTap: () => context.goNamed(
                                 RouteNames.employeeDetails,
                                 pathParameters: {'employeeId': employee.id},
                               ),

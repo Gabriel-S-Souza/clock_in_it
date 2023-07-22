@@ -1,40 +1,29 @@
-import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/view/login_screen.dart';
-import '../../features/employee/presentation/view/screens/employees_screen.dart';
+import '../../features/employee/presentation/view/employee_details_screen.dart';
+import '../../features/employee/presentation/view/employees_screen.dart';
 import 'route_names.dart';
 
-class AppRoutes {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case RouteNames.login:
-      case RouteNames.initial:
-        return MaterialPageRoute(
-          builder: (_) => LoginScreen(),
-          settings: settings,
-        );
-
-      case RouteNames.employees:
-        return MaterialPageRoute(
-          builder: (_) => const EmployeesScreen(),
-          settings: settings,
-        );
-
-      case RouteNames.employeeDetails:
-        return MaterialPageRoute(
-          builder: (_) => const Scaffold(body: Text('Employees Details')),
-          settings: settings,
-        );
-
-      default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
-          ),
-          settings: settings,
-        );
-    }
-  }
-}
+final appRouter = GoRouter(
+  routes: [
+    GoRoute(
+      path: RouteNames.login,
+      name: RouteNames.login,
+      builder: (context, state) => LoginScreen(),
+    ),
+    GoRoute(
+      path: RouteNames.employees,
+      name: RouteNames.employees,
+      builder: (context, state) => const EmployeesScreen(),
+    ),
+    GoRoute(
+      path: '${RouteNames.employeeDetails}/:employeeId',
+      name: RouteNames.employeeDetails,
+      builder: (context, state) => EmployeeDetailsScreen(
+        employeeId: state.pathParameters['employeeId']!,
+      ),
+    ),
+  ],
+  initialLocation: RouteNames.login,
+);

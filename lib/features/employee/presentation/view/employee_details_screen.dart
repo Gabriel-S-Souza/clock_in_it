@@ -31,7 +31,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              context.pop();
+              context.goNamed(RouteNames.employees);
             },
           ),
           actions: [
