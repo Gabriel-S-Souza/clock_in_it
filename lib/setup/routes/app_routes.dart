@@ -13,6 +13,10 @@ final appRouter = GoRouter(
       builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
+      path: RouteNames.initial,
+      redirect: (context, state) => RouteNames.login,
+    ),
+    GoRoute(
       path: RouteNames.employees,
       name: RouteNames.employees,
       builder: (context, state) => const EmployeesScreen(),

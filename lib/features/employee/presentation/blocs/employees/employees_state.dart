@@ -23,7 +23,7 @@ class EmployeesState extends Equatable {
       EmployeesState(
         employees: employees ?? this.employees,
         isLoading: isLoading ?? this.isLoading,
-        messageError: messageError ?? this.messageError,
+        messageError: messageError,
       );
 
   static EmployeesState initial() => const EmployeesState();

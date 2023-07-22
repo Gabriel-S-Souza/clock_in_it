@@ -35,72 +35,69 @@ class LoginScreen extends StatelessWidget {
               context.goNamed(RouteNames.employees);
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: BlocBuilder(
-              bloc: loginBloc,
-              builder: (context, state) => Stack(
-                alignment: Alignment.center,
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                controller: usernameController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Username',
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter username';
-                                  }
-                                  return null;
-                                },
+          child: BlocBuilder(
+            bloc: loginBloc,
+            builder: (context, state) => Stack(
+              alignment: Alignment.center,
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: usernameController,
+                              decoration: const InputDecoration(
+                                labelText: 'Username',
                               ),
-                              TextFormField(
-                                controller: passwordController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Password',
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter password';
-                                  }
-                                  return null;
-                                },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter username';
+                                }
+                                return null;
+                              },
+                            ),
+                            TextFormField(
+                              controller: passwordController,
+                              decoration: const InputDecoration(
+                                labelText: 'Password',
                               ),
-                              const SizedBox(height: 16),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    loginBloc.login(
-                                      usernameController.text,
-                                      passwordController.text,
-                                    );
-                                  }
-                                },
-                                child: const Text('Login'),
-                              ),
-                            ],
-                          ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter password';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  loginBloc.login(
+                                    usernameController.text,
+                                    passwordController.text,
+                                  );
+                                }
+                              },
+                              child: const Text('Login'),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  if (state is LoginLoading)
-                    Container(
-                      color: Colors.black.withOpacity(0.5),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                ),
+                if (state is LoginLoading)
+                  Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
         ),
