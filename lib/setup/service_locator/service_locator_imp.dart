@@ -12,6 +12,7 @@ import '../../features/employee/data/data_sources/remote/employee_data_source_im
 import '../../features/employee/data/repositories/employee_repository_imp.dart';
 import '../../features/employee/domain/repositories/employee_repository.dart';
 import '../../features/employee/domain/use_cases/employee_use_case.dart';
+import '../../features/employee/presentation/blocs/employee_details/employee_details_bloc.dart';
 import '../../features/employee/presentation/blocs/employees/employees_bloc.dart';
 import '../../shared/data/data_sources/local_storage/local_storage_data_source.dart';
 import '../../shared/data/data_sources/local_storage/local_storage_data_source_imp.dart';
@@ -92,6 +93,8 @@ class ServiceLocatorImp implements ServiceLocator {
           employeeUseCase: get(),
           localStorageUseCase: get(),
         ));
+
+    registerFactory<EmployeeDetailsBloc>(() => EmployeeDetailsBloc(get()));
   }
 
   @override

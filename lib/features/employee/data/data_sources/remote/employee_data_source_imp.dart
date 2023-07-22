@@ -38,14 +38,14 @@ class EmployeeDataSourceImp implements EmployeeDataSource {
   }
 
   @override
-  Future<Result<EmployeeDetailModel>> getDetails(String employeeId) async {
+  Future<Result<EmployeeDetailsModel>> getDetails(String employeeId) async {
     try {
       final response = await _httpClient.get(
         '/${ApiPaths.employees}/$employeeId',
         token: await _secureLocalStorage.get('accessToken'),
       );
       if (response.isSuccess) {
-        final employee = EmployeeDetailModel.fromJson(response.data);
+        final employee = EmployeeDetailsModel.fromJson(response.data);
         return Result.success(employee);
       } else {
         return Result.failure(const ServerFailure());

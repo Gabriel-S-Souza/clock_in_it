@@ -1,5 +1,5 @@
 import '../../../../shared/domain/entities/result/result.dart';
-import '../../domain/entities/employee_detail_entity.dart';
+import '../../domain/entities/employee_details_entity.dart';
 import '../../domain/entities/employee_entity.dart';
 import '../../domain/repositories/employee_repository.dart';
 import '../data_sources/remote/employee_data_source.dart';
@@ -13,6 +13,6 @@ class EmployeeRepositoryImp implements EmployeeRepository {
   Future<Result<List<EmployeeEntity>>> getEmployees() => _employeeDataSource.getEmployees();
 
   @override
-  Future<Result<EmployeeDetailEntity>> getDetails(String employeeId) =>
+  Future<Result<EmployeeDetailsEntity>> getDetails(String employeeId) =>
       _employeeDataSource.getDetails(employeeId);
 }

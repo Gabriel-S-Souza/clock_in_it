@@ -4,5 +4,5 @@ import '../../models/employee_model.dart';
 
 abstract class EmployeeDataSource {
   Future<Result<List<EmployeeModel>>> getEmployees();
-  Future<Result<EmployeeDetailModel>> getDetails(String employeeId);
+  Future<Result<EmployeeDetailsModel>> getDetails(String employeeId);
 }

@@ -1,6 +1,6 @@
 part of '../dio_app.dart';
 
-// logic to simulate token return
+// logic to simulate token return from API
 Future<void> _mockTokenInterceptor(
   RequestOptions options,
   RequestInterceptorHandler handler,

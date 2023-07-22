@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-class EmployeeDetailEntity {
+class EmployeeDetailsEntity {
   String id;
   String name;
   int personalId;
@@ -8,7 +8,7 @@ class EmployeeDetailEntity {
   Uint8List pic;
   DateTime createdAt;
 
-  EmployeeDetailEntity({
+  EmployeeDetailsEntity({
     required this.id,
     required this.name,
     required this.personalId,

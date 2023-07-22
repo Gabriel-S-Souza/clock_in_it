@@ -13,7 +13,7 @@ Future<void> _fixImagesInterceptor(
       return e;
     }).toList();
     response.data = newData;
-  } else if (response.data is Map && response.data['pic'] == null) {
+  } else if (response.data is Map && (response.data as Map).containsKey('pic')) {
     final data = response.data as Map;
     data['pic'] = {
       'data': _avatars[math.Random().nextInt(_avatars.length)].codeUnits,
