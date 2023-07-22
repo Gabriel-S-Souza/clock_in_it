@@ -13,17 +13,20 @@ class EmployeesBloc extends Cubit<EmployeesState> {
     required LocalStorageUseCase localStorageUseCase,
   })  : _employeeUseCase = employeeUseCase,
         _localStorageUseCase = localStorageUseCase,
-        super(EmployeesInitial());
+        super(EmployeesState.initial());
 
   Future<void> getEmployees() async {
-    emit(EmployeesLoading());
+    emit(state.loading());
     final result = await _employeeUseCase.getEmployees();
     result.when(
       onSuccess: (data) {
-        emit(EmployeesSuccess(employees: data));
+        emit(state.success(data));
       },
       onFailure: (failure, cachedEmployees) {
-        emit(EmployeesError(message: failure.message));
+        emit(state.failure(
+          employees: cachedEmployees,
+          message: failure.message,
+        ));
       },
     );
   }

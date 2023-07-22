@@ -10,6 +10,7 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
   final loginBloc = ServiceLocatorImp.I.get<LoginBloc>();
+
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();

@@ -6,8 +6,9 @@ import '../../features/auth/data/repositories/auth_repository_imp.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/domain/use_cases/auth_use_case.dart';
 import '../../features/auth/presentation/blocs/login_bloc.dart';
-import '../../features/employee/data/data_sources/employee_data_source.dart';
-import '../../features/employee/data/data_sources/employee_data_source_imp.dart';
+import '../../features/employee/data/data_sources/cache/employee_cacheanle_data_source_imp.dart';
+import '../../features/employee/data/data_sources/remote/employee_data_source.dart';
+import '../../features/employee/data/data_sources/remote/employee_data_source_imp.dart';
 import '../../features/employee/data/repositories/employee_repository_imp.dart';
 import '../../features/employee/domain/repositories/employee_repository.dart';
 import '../../features/employee/domain/use_cases/employee_use_case.dart';
@@ -59,9 +60,12 @@ class ServiceLocatorImp implements ServiceLocator {
           secureLocalStorage: get(),
         ));
 
-    registerFactory<EmployeeDataSource>(() => EmployeeDataSourceImp(
-          httpClient: get(),
-          secureLocalStorage: get(),
+    registerFactory<EmployeeDataSource>(() => EmployeeCacheableDataSourceImp(
+          employeeRemoteDataSource: EmployeeDataSourceImp(
+            httpClient: get(),
+            secureLocalStorage: get(),
+          ),
+          localStorageDataSource: get(),
         ));
 
     // repositories

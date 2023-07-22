@@ -2,7 +2,7 @@ import '../../../../shared/domain/entities/result/result.dart';
 import '../../domain/entities/employee_detail_entity.dart';
 import '../../domain/entities/employee_entity.dart';
 import '../../domain/repositories/employee_repository.dart';
-import '../data_sources/employee_data_source.dart';
+import '../data_sources/remote/employee_data_source.dart';
 
 class EmployeeRepositoryImp implements EmployeeRepository {
   final EmployeeDataSource _employeeDataSource;

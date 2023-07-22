@@ -1,10 +1,10 @@
-import '../../../../setup/http/http_client.dart';
-import '../../../../setup/utils/api_paths.dart';
-import '../../../../shared/data/data_sources/secure_local_storage/secure_local_storage.dart';
-import '../../../../shared/domain/entities/failure/failure.dart';
-import '../../../../shared/domain/entities/result/result.dart';
-import '../models/employee_detail_model.dart';
-import '../models/employee_model.dart';
+import '../../../../../setup/http/http_client.dart';
+import '../../../../../setup/utils/api_paths.dart';
+import '../../../../../shared/data/data_sources/secure_local_storage/secure_local_storage.dart';
+import '../../../../../shared/domain/entities/failure/failure.dart';
+import '../../../../../shared/domain/entities/result/result.dart';
+import '../../models/employee_detail_model.dart';
+import '../../models/employee_model.dart';
 import 'employee_data_source.dart';
 
 class EmployeeDataSourceImp implements EmployeeDataSource {

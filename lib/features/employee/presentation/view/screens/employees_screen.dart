@@ -43,10 +43,10 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
           child: BlocListener<EmployeesBloc, EmployeesState>(
             bloc: employeesBloc,
             listener: (context, state) {
-              if (state is EmployeesError) {
+              if (state.hasError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(state.message),
+                    content: Text(state.messageError!),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -55,45 +55,30 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
             child: BlocBuilder<EmployeesBloc, EmployeesState>(
               bloc: employeesBloc,
               builder: (context, state) {
-                if (state is EmployeesLoading) {
+                if (state.isLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state is EmployeesSuccess) {
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      employeesBloc.getEmployees();
-                    },
-                    child: ListView.builder(
-                      itemCount: state.employees.length,
-                      itemBuilder: (context, index) {
-                        final employee = state.employees[index];
-                        return ListTile(
-                          title: Text(employee.name),
-                          minVerticalPadding: 24,
-                          subtitle: Text(employee.personalId.toString()),
-                          trailing: CircleAvatar(
-                            backgroundImage: MemoryImage(employee.pic),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                } else if (state is EmployeesError) {
-                  return RefreshIndicator(
-                      onRefresh: () async {
-                        employeesBloc.getEmployees();
-                      },
-                      child: ListView(
-                        children: [
-                          Center(
-                            child: SelectableText(state.message),
-                          ),
-                        ],
-                      ));
-                } else {
-                  return const SizedBox();
                 }
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    employeesBloc.getEmployees();
+                  },
+                  child: ListView.builder(
+                    itemCount: state.employees.length,
+                    itemBuilder: (context, index) {
+                      final employee = state.employees[index];
+                      return ListTile(
+                        title: Text(employee.name),
+                        minVerticalPadding: 24,
+                        subtitle: Text(employee.personalId.toString()),
+                        trailing: CircleAvatar(
+                          backgroundImage: MemoryImage(employee.pic),
+                        ),
+                      );
+                    },
+                  ),
+                );
               },
             ),
           ),
