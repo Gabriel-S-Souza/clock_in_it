@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -14,6 +15,7 @@ class NotificationService implements NotificationServiceBase {
   late final LocalStorageRepository _localStorage;
   late final NotificationDetails _platformChannelSpecifics;
   bool _showPeriodicNotification = false;
+  bool _isPermissionGranted = false;
 
   @override
   Future<void> initialize([
@@ -23,11 +25,22 @@ class NotificationService implements NotificationServiceBase {
     _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     _localStorage = localStorage ?? ServiceLocatorImp.I.get<LocalStorageRepository>();
 
+    final DarwinInitializationSettings initializationSettingsDarwin =
+        DarwinInitializationSettings(onDidReceiveLocalNotification: (
+      int id,
+      String? title,
+      String? body,
+      String? payload,
+    ) async {
+      print('onDidReceiveLocalNotification: $payload');
+    });
+
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
-    const InitializationSettings initializationSettings = InitializationSettings(
+
+    final InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
-      iOS: null,
+      iOS: initializationSettingsDarwin,
       macOS: null,
     );
 
@@ -59,6 +72,30 @@ class NotificationService implements NotificationServiceBase {
     );
   }
 
+  Future<bool> _requestPermissions() async {
+    if (_isPermissionGranted) {
+      return true;
+    }
+    if (Platform.isIOS) {
+      _isPermissionGranted = await _flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+              ?.requestPermissions(
+                alert: true,
+                badge: true,
+                sound: true,
+              ) ??
+          false;
+    }
+    if (Platform.isAndroid) {
+      final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      _isPermissionGranted = await flutterLocalNotificationsPlugin
+              .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+              ?.requestPermission() ??
+          false;
+    }
+    return _isPermissionGranted;
+  }
+
   @override
   Future<void> show(
     int id,
@@ -67,6 +104,7 @@ class NotificationService implements NotificationServiceBase {
     String? imagePath,
     bool showButton = false,
   ]) async {
+    await _requestPermissions();
     await _flutterLocalNotificationsPlugin.show(
       id,
       title,
