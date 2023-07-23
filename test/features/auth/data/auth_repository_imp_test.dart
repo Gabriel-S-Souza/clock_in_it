@@ -1,16 +1,13 @@
-import 'package:clock_in_it/features/auth/data/data_sources/auth_datasource.dart';
 import 'package:clock_in_it/features/auth/data/repositories/auth_repository_imp.dart';
 import 'package:clock_in_it/shared/domain/entities/failure/failure.dart';
 import 'package:clock_in_it/shared/domain/entities/result/result.dart';
 import 'package:clock_in_it/shared/domain/entities/user/user_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../../fakes/credentials_fake.dart';
-import '../../../mocks/auth_repository_imp_test.mocks.dart';
+import '../../../mocks/build_mocks.mocks.dart';
 
-@GenerateMocks([AuthDataSource])
 void main() {
   late AuthRepositoryImp authRepository;
   late MockAuthDataSource mockAuthDataSource;

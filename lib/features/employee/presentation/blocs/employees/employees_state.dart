@@ -28,7 +28,7 @@ class EmployeesState extends Equatable {
 
   static EmployeesState initial() => const EmployeesState();
 
-  EmployeesState loading() => copyWith(isLoading: true);
+  EmployeesState loading() => copyWith(isLoading: true, messageError: null, employees: []);
 
   EmployeesState success(List<EmployeeEntity> employees) => copyWith(
         employees: employees,

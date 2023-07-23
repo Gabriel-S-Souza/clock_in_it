@@ -1,18 +1,14 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:clock_in_it/features/auth/domain/use_cases/auth_use_case.dart';
 import 'package:clock_in_it/features/auth/presentation/blocs/login_bloc.dart';
 import 'package:clock_in_it/features/auth/presentation/blocs/login_state.dart';
 import 'package:clock_in_it/shared/domain/entities/failure/failure.dart';
 import 'package:clock_in_it/shared/domain/entities/result/result.dart';
 import 'package:clock_in_it/shared/domain/entities/user/user_entity.dart';
-import 'package:clock_in_it/shared/domain/use_cases/local_storage_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../mocks/login_bloc_test.mocks.dart';
+import '../../../mocks/build_mocks.mocks.dart';
 
-@GenerateMocks([AuthUseCase, LocalStorageUseCase])
 void main() {
   late LoginBloc loginBloc;
   late MockAuthUseCase mockAuthUseCase;

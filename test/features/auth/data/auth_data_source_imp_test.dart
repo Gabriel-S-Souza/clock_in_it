@@ -1,18 +1,13 @@
 import 'package:clock_in_it/features/auth/data/data_sources/auth_datasource_imp.dart';
-import 'package:clock_in_it/setup/http/http_client.dart';
-import 'package:clock_in_it/shared/data/data_sources/secure_local_storage/secure_local_storage.dart';
 import 'package:clock_in_it/shared/domain/entities/failure/failure.dart';
 import 'package:clock_in_it/shared/domain/entities/response/response.dart';
 import 'package:clock_in_it/shared/domain/entities/user/user_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-
 import '../../../fakes/credentials_fake.dart';
 import '../../../fixtures/login_fixture.dart';
-import '../../../mocks/auth_data_source_imp_test.mocks.dart';
+import '../../../mocks/build_mocks.mocks.dart';
 
-@GenerateMocks([HttpClient, SecureLocalStorage])
 void main() {
   late AuthDataSourceImp authDataSource;
   late MockHttpClient mockHttpClient;
