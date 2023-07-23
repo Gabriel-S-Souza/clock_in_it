@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:math' as math;
 import 'package:crypto/crypto.dart';
 
@@ -10,7 +9,7 @@ import '../../shared/data/data_sources/refresh_token/refresh_token_data_source.d
 import '../../shared/data/data_sources/secure_local_storage/secure_local_storage.dart';
 import '../service_locator/service_locator_imp.dart';
 
-part 'interceptors/mock_token_interceptor.dart';
+part 'interceptors/login_mock_interceptor.dart';
 part 'interceptors/fix_images_interceptor.dart';
 part 'interceptors/check_token_interceptor.dart';
 
@@ -32,6 +31,8 @@ final dioApp = Dio(
       responseBody: true,
     ),
     InterceptorsWrapper(onRequest: _checkTokenInterceptor),
-    InterceptorsWrapper(onRequest: _mockTokenInterceptor),
-    InterceptorsWrapper(onResponse: _fixImagesInterceptor),
+    InterceptorsWrapper(
+      onRequest: _loginMockInterceptor,
+      onResponse: _fixImagesInterceptor,
+    ),
   ]);

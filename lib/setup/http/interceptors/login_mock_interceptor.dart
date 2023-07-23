@@ -1,7 +1,7 @@
 part of '../dio_app.dart';
 
-// logic to simulate token return from API
-Future<void> _mockTokenInterceptor(
+// simulates the authentication requests (login and refresh token)
+Future<void> _loginMockInterceptor(
   RequestOptions options,
   RequestInterceptorHandler handler,
 ) async {
@@ -55,6 +55,7 @@ String _generateJwt(dynamic data, {bool isRefresh = false}) {
     'typ': 'JWT',
   };
   final headerBase64 = base64UrlEncode(utf8.encode(jsonEncode(header)));
+
   final payload = {
     'sub': 1,
     'name': data['username'],
@@ -63,14 +64,11 @@ String _generateJwt(dynamic data, {bool isRefresh = false}) {
         : DateTime.now().add(const Duration(seconds: 30)).millisecondsSinceEpoch,
   };
   final payloadBase64 = base64UrlEncode(jsonEncode(payload).codeUnits);
+
   const secret = 'secret';
   final digest =
       Hmac(sha256, utf8.encode(secret)).convert('$headerBase64.$payloadBase64'.codeUnits);
   final sign = base64UrlEncode(digest.bytes);
-  if (!isRefresh) {
-    log('generated token now: $headerBase64.$payloadBase64.$sign');
-    final expireIn = DateTime.fromMillisecondsSinceEpoch(payload['exp'] as int);
-    log('expire in: ${expireIn.difference(DateTime.now()).inSeconds} seconds');
-  }
+
   return '$headerBase64.$payloadBase64.$sign';
 }

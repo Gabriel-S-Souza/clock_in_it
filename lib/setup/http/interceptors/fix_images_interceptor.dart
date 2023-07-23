@@ -1,5 +1,10 @@
 part of '../dio_app.dart';
 
+// Os dados da imagem dos colaboradores pareciam estar corrompidos ou inválidos,
+// então eu criei este método para substituir a propriedade ["pic"]["data"] retornada pela API
+// por imagens base64 válidas.
+//
+// Isso foi feito apenas para fins de termos o efeito visual esperado,
 Future<void> _fixImagesInterceptor(
   Response<dynamic> response,
   ResponseInterceptorHandler handler,
