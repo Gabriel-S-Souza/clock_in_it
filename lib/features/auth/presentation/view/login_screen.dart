@@ -53,6 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (didAuthenticate) {
         usernameController.text = _storage.get(keyUserName) ?? '';
         passwordController.text = _storage.get(keyPassword) ?? '';
+        if (usernameController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+          loginBloc.login(
+            usernameController.text,
+            passwordController.text,
+          );
+        }
       }
     }
   }
@@ -60,14 +66,14 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _onFormSubmit() async {
     if (_formKey.currentState!.validate()) {
       if (_savePassword) {
-        await _storage.set(keyLocalAuthActive, value: 'false');
-
         await _storage.set(keyUserName, value: usernameController.text);
         await _storage.set(keyPassword, value: passwordController.text);
 
-        if (await localAuth.canCheckBiometrics) {
+        final isVerificationEnabled = _storage.get(keyLocalAuthActive) ?? 'false';
+
+        if (isVerificationEnabled == 'false' && await localAuth.canCheckBiometrics) {
           if (!mounted) return;
-          showModalBottomSheet<void>(
+          await showModalBottomSheet<void>(
             context: context,
             builder: (BuildContext context) => BottomSheet(
               onClosing: () {},
@@ -77,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
-                      'Enable fingerprint authentication?',
+                      'Ativar autenticação por biometria?',
                       style: TextStyle(fontSize: 18),
                     ),
                     const SizedBox(height: 16),
@@ -86,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 48,
                       child: ElevatedButton(
                         onPressed: _onEnableLocalAuth,
-                        child: const Text('Enable'),
+                        child: const Text('Ativar'),
                       ),
                     ),
                   ],
@@ -109,8 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Fingerprint authentication enabled.\nClose the app and restart it again'),
+      content: Text('Autenticação por biometria ativada'),
     ));
+    context.pop();
   }
 
   @override
