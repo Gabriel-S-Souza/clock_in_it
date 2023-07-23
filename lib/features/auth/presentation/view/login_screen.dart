@@ -167,6 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
+                              const SizedBox(height: 16),
                               SizedBox(
                                 height: 52,
                                 child: Image.memory(
@@ -187,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 hint: 'Username',
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter username';
+                                    return 'Digite o nome de usuário';
                                   }
                                   return null;
                                 },
@@ -198,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 hint: 'Password',
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter password';
+                                    return 'Digite a senha';
                                   }
                                   return null;
                                 },
@@ -220,6 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       : const Text('Login'),
                                 ),
                               ),
+                              const SizedBox(height: 16),
                             ],
                           ),
                         ),

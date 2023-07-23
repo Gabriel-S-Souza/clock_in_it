@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../setup/routes/route_names.dart';
 import '../../../../setup/service_locator/service_locator_imp.dart';
+import '../../../../shared/data/services/notifications/notification_imp.dart';
 import '../../../../shared/presentation/widgets/responsive_padding.dart';
 import '../blocs/employee_details/employee_details_bloc.dart';
 import '../blocs/employee_details/employee_details_state.dart';
@@ -39,6 +40,7 @@ class _EmployeeDetailsScreenState extends State<EmployeeDetailsScreen> {
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
+                NotificationServiceImp.I.cancelPeriodicNotification();
                 context.goNamed(RouteNames.login);
               },
             ),

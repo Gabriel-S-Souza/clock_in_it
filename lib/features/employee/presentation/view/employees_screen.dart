@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../setup/routes/route_names.dart';
 import '../../../../setup/service_locator/service_locator_imp.dart';
+import '../../../../shared/data/services/notifications/notification_imp.dart';
 import '../../../../shared/presentation/widgets/responsive_padding.dart';
 import '../blocs/employees/employees_bloc.dart';
 import '../blocs/employees/employees_state.dart';
@@ -22,6 +23,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
   void initState() {
     super.initState();
     employeesBloc.getEmployees();
+    NotificationServiceImp.I.activatePeriodicNotification();
   }
 
   @override
@@ -32,6 +34,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
+                NotificationServiceImp.I.cancelPeriodicNotification();
                 context.pushReplacement(RouteNames.login);
               },
             ),
