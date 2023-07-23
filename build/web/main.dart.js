@@ -44548,11 +44548,11 @@ p=A.oh(new A.O1(A.oj(A.b([B.el,s,l,B.Lo,r,B.xP,q,B.xP,A.eV(new A.Jp(new A.a7C(m)
 return A.lr(B.J,A.b([A.An(new A.ye(p,B.kE,m.f),16,!1,0.3)],o),B.K,B.c0)},
 $S:427}
 A.a7A.prototype={
-$1(a){if(a.length===0)return"Please enter username"
+$1(a){if(a.length===0)return"Digite o nome de usu\xe1rio"
 return null},
 $S:128}
 A.a7B.prototype={
-$1(a){if(a.length===0)return"Please enter password"
+$1(a){if(a.length===0)return"Digite a senha"
 return null},
 $S:128}
 A.a7C.prototype={

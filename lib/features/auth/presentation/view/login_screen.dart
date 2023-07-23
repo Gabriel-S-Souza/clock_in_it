@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                                 hint: 'Username',
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter username';
+                                    return 'Digite o nome de usuário';
                                   }
                                   return null;
                                 },
@@ -85,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                                 hint: 'Password',
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter password';
+                                    return 'Digite a senha';
                                   }
                                   return null;
                                 },
