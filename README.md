@@ -1,6 +1,6 @@
 ## Clock In It
 
-Clock In It permite aos usuários fazer login, visualizar uma lista de colaboradores com ou sem conexão com a internet, ele permite ainda ver detalhes dos colaboradores e receber notificações com informações da API armazenadas. A versão web pode ser acessada aqui: https://golden-dieffenbachia-3c2ae4.netlify.app/#/
+Clock In It permite aos usuários fazer login com nome de usuário e senha e login com o sistema de autenticação do dispositivo (apenas mobile), visualizar uma lista de colaboradores com ou sem conexão com a internet, permite ainda ver detalhes dos colaboradores e receber notificações com informações da API armazenadas. A versão web pode ser acessada aqui: https://golden-dieffenbachia-3c2ae4.netlify.app/#/
 
 ### Tecnologias
 - Flutter
@@ -19,6 +19,7 @@ Clock In It permite aos usuários fazer login, visualizar uma lista de colaborad
 - Testes unitários:
   - Os testes seguem o pattern **Arrange, Act, Assert** e para mocks foi utilizado [**Mockito**](https://pub.dev/packages/mockito)
 - Autenticação com JWT
+- Autenticação com Fingerprint e FaceId
 - Caching com Decorator Pattern
 - Princípios SOLID
 - Injeção de Dependência
