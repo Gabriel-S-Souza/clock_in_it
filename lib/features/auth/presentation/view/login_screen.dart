@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -37,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final localAuth = LocalAuthentication();
 
   Future<void> _readFromStorage() async {
+    if (kIsWeb) return;
     final isLocalAuthEnabled = _storage.get('keyLocalAuthActive');
 
     if (isLocalAuthEnabled != null) {
@@ -65,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _onFormSubmit() async {
     if (_formKey.currentState!.validate()) {
-      if (_savePassword) {
+      if (_savePassword && !kIsWeb) {
         await _storage.set(keyUserName, value: usernameController.text);
         await _storage.set(keyPassword, value: passwordController.text);
 
@@ -110,6 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _onEnableLocalAuth() async {
+    if (kIsWeb) return;
     await _storage.set(keyLocalAuthActive, value: 'true');
 
     if (!mounted) return;
