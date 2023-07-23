@@ -4,8 +4,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../setup/routes/route_names.dart';
 import '../../../../setup/service_locator/service_locator_imp.dart';
+import '../../../../setup/utils/assets.dart';
+import '../../../../shared/presentation/widgets/responsive_padding.dart';
 import '../blocs/login_bloc.dart';
 import '../blocs/login_state.dart';
+import 'widgets/text_field_widget.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -21,83 +24,103 @@ class LoginScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Login'),
         ),
-        body: BlocListener(
-          bloc: loginBloc,
-          listener: (context, state) {
-            if (state is LoginError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            } else if (state is LoginSuccess) {
-              context.goNamed(RouteNames.employees);
-            }
-          },
-          child: BlocBuilder(
+        body: ResponsivePadding(
+          isScreenWrapper: true,
+          child: BlocListener(
             bloc: loginBloc,
-            builder: (context, state) => Stack(
-              alignment: Alignment.center,
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              controller: usernameController,
-                              decoration: const InputDecoration(
-                                labelText: 'Username',
+            listener: (context, state) {
+              if (state is LoginError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              } else if (state is LoginSuccess) {
+                context.goNamed(RouteNames.employees);
+              }
+            },
+            child: BlocBuilder(
+              bloc: loginBloc,
+              builder: (context, state) => Stack(
+                alignment: Alignment.center,
+                children: [
+                  ResponsivePadding(
+                    widthPaddingFactor: 0.3,
+                    child: Form(
+                      key: _formKey,
+                      child: Center(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 52,
+                                child: Image.memory(
+                                  imageClock64,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant
+                                      .withOpacity(0.6),
+                                ),
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter username';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              controller: passwordController,
-                              decoration: const InputDecoration(
-                                labelText: 'Password',
+                              Text(
+                                'Clock In It',
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter password';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  loginBloc.login(
-                                    usernameController.text,
-                                    passwordController.text,
-                                  );
-                                }
-                              },
-                              child: const Text('Login'),
-                            ),
-                          ],
+                              const SizedBox(height: 52),
+                              TextFieldWidget(
+                                controller: usernameController,
+                                hint: 'Username',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter username';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 24),
+                              TextFieldWidget(
+                                controller: passwordController,
+                                hint: 'Password',
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter password';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 24),
+                              SizedBox(
+                                width: double.maxFinite,
+                                height: 48,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      loginBloc.login(
+                                        usernameController.text,
+                                        passwordController.text,
+                                      );
+                                    }
+                                  },
+                                  child: state is LoginLoading
+                                      ? const SizedBox(
+                                          height: 24,
+                                          width: 24,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : const Text('Login'),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                if (state is LoginLoading)
-                  Container(
-                    color: Colors.black.withOpacity(0.5),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

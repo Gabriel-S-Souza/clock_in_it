@@ -31,6 +31,9 @@ Future<void> _loginMockInterceptor(
       {'username': username},
       isRefresh: true,
     );
+    if (!isRefreshEndpoint) {
+      await Future.delayed(const Duration(seconds: 1));
+    }
     handler.resolve(
       Response(
         requestOptions: options,
@@ -61,7 +64,7 @@ String _generateJwt(dynamic data, {bool isRefresh = false}) {
     'name': data['username'],
     'exp': isRefresh //
         ? null
-        : DateTime.now().add(const Duration(seconds: 30)).millisecondsSinceEpoch,
+        : DateTime.now().add(const Duration(seconds: 60)).millisecondsSinceEpoch,
   };
   final payloadBase64 = base64UrlEncode(jsonEncode(payload).codeUnits);
 
