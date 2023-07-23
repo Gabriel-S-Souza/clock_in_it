@@ -53,6 +53,7 @@ class LoginScreen extends StatelessWidget {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
+                              const SizedBox(height: 16),
                               SizedBox(
                                 height: 52,
                                 child: Image.memory(
@@ -113,6 +114,7 @@ class LoginScreen extends StatelessWidget {
                                       : const Text('Login'),
                                 ),
                               ),
+                              const SizedBox(height: 16),
                             ],
                           ),
                         ),
