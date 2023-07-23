@@ -17,7 +17,7 @@ Clock In It permite aos usuários fazer login, visualizar uma lista de colaborad
    - O projeto segue **Clean Architecture** (baseado na proposta da [**Resocoder**](https://resocoder.com/2019/08/27/flutter-tdd-clean-architecture-course-1-explanation-project-structure/)) que enfatiza a separação de responsabilidades em camadas, prevenindo que as estruturas de alto nível sejam sujeitas a mudanças excessivas relacionadas aos detalhes.
    - Adota também o padão de organização [**Feature First**](https://codewithandrea.com/articles/flutter-project-structure/), que prioriza a estruturação do projeto em torno das funcionalidades, facilitando a manutenção e a escalabilidade.
 - Testes unitários:
-  - Os testes seguem o pattern **Arrange, Act, Assert** e para mocks foi utilizado [**Mockito**]([https://www.google.com](https://pub.dev/packages?q=mockito)
+  - Os testes seguem o pattern **Arrange, Act, Assert** e para mocks foi utilizado [**Mockito**](https://pub.dev/packages/mockito)
 - Autenticação com JWT
 - Caching com Decorator Pattern
 - Princípios SOLID
