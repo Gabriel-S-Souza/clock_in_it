@@ -1,21 +1,21 @@
 // ignore_for_file: unnecessary_overrides
 import 'dart:convert';
 
-import '../../../../../shared/data/data_sources/local_storage/local_storage_data_source.dart';
+import '../../../../../shared/data/data_sources/local_storage/cache.dart';
 import '../../../../../shared/domain/entities/result/result.dart';
 import '../../models/employee_detail_model.dart';
 import '../../models/employee_model.dart';
 import 'employee_cacheable_data_source.dart';
 
 class EmployeeCacheableDataSourceImp extends EmployeeCacheableDataSource {
-  final LocalStorageDataSource _localStorageDataSource;
+  final Cache _cacheStorage;
 
   final String _employeesCacheKey = 'employees';
 
   EmployeeCacheableDataSourceImp({
     required super.employeeRemoteDataSource,
-    required LocalStorageDataSource localStorageDataSource,
-  }) : _localStorageDataSource = localStorageDataSource;
+    required Cache cacheStorage,
+  }) : _cacheStorage = cacheStorage;
 
   @override
   Future<Result<List<EmployeeModel>>> getEmployees() async {
@@ -25,7 +25,7 @@ class EmployeeCacheableDataSourceImp extends EmployeeCacheableDataSource {
       _saveInCache(employeesResult.data);
       return employeesResult;
     } else {
-      final List<EmployeeModel> cachedEmployees = _getFromCache();
+      final List<EmployeeModel> cachedEmployees = await _getFromCache();
       return Result.failure(employeesResult.failure, cachedEmployees);
     }
   }
@@ -36,11 +36,11 @@ class EmployeeCacheableDataSourceImp extends EmployeeCacheableDataSource {
 
   void _saveInCache(List<EmployeeModel> employees) {
     final employeesJson = employees.map((employee) => jsonEncode(employee.toJson())).toList();
-    _localStorageDataSource.setList(_employeesCacheKey, value: employeesJson);
+    _cacheStorage.setList(_employeesCacheKey, value: employeesJson);
   }
 
-  List<EmployeeModel> _getFromCache() {
-    final employeesJson = _localStorageDataSource.getList(_employeesCacheKey);
+  Future<List<EmployeeModel>> _getFromCache() async {
+    final employeesJson = await _cacheStorage.getList(_employeesCacheKey);
     if (employeesJson != null) {
       final employees = employeesJson.map((employeeJson) {
         final employeeMap = jsonDecode(employeeJson);

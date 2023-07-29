@@ -14,6 +14,7 @@ import '../../features/employee/domain/repositories/employee_repository.dart';
 import '../../features/employee/domain/use_cases/employee_use_case.dart';
 import '../../features/employee/presentation/blocs/employee_details/employee_details_bloc.dart';
 import '../../features/employee/presentation/blocs/employees/employees_bloc.dart';
+import '../../shared/data/data_sources/local_storage/cache.dart';
 import '../../shared/data/data_sources/local_storage/local_storage_data_source.dart';
 import '../../shared/data/data_sources/local_storage/local_storage_data_source_imp.dart';
 import '../../shared/data/data_sources/refresh_token/refresh_token_data_source.dart';
@@ -21,6 +22,7 @@ import '../../shared/data/data_sources/refresh_token/refresh_token_data_source_i
 import '../../shared/data/data_sources/secure_local_storage/secure_local_storage.dart';
 import '../../shared/data/data_sources/secure_local_storage/secure_local_storage_imp.dart';
 import '../../shared/data/repositories/loacal_storage_repository_imp.dart';
+import '../../shared/data/services/cache_path_provider/path_imp.dart';
 import '../../shared/domain/repositories/local_storage_repository.dart';
 import '../../shared/domain/use_cases/local_storage_use_case.dart';
 import '../http/dio_app.dart';
@@ -45,6 +47,10 @@ class ServiceLocatorImp implements ServiceLocator {
     registerFactory<HttpClient>(() => HttpClient(dioApp));
 
     // data sources
+    final cachePath = await TempPath().path;
+
+    registerSingleton<Cache>(Cache.I.init(cachePath));
+
     final localStorage = LocalStorageDataSourceImp();
     await localStorage.init();
     registerFactory<LocalStorageDataSource>(() => localStorage);
@@ -66,7 +72,7 @@ class ServiceLocatorImp implements ServiceLocator {
             httpClient: get(),
             secureLocalStorage: get(),
           ),
-          localStorageDataSource: get(),
+          cacheStorage: get(),
         ));
 
     // repositories
