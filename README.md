@@ -1,6 +1,6 @@
 ## Clock In It
 
-Clock In It permite aos usuários fazer login, visualizar uma lista de colaboradores com ou sem conexão com a internet, ele permite ainda ver detalhes dos colaboradores e receber notificações com informações da API armazenadas. A versão web pode ser acessada aqui: https://golden-dieffenbachia-3c2ae4.netlify.app/#/
+Clock In It permite aos usuários fazer login, visualizar uma lista de colaboradores com ou sem conexão com a internet (caching), ele permite ainda ver detalhes dos colaboradores e receber notificações com informações da API armazenadas. A versão web pode ser acessada aqui: https://golden-dieffenbachia-3c2ae4.netlify.app/#/
 
 ### Tecnologias
 - Flutter
