@@ -55,9 +55,9 @@ flutter run
 </div>
 </br>
 <div style="display: flex; justify-content: center;">
-  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/2362e8f1-90cb-4a13-9a28-f6c826545adb" width="500" />
-  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/c5e93db1-c95e-45ff-866b-f10952fda8c2" width="500" />
-  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/a1660a46-0a9f-4dd1-8046-968a04a0fc6f" width="500" />
+  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/2362e8f1-90cb-4a13-9a28-f6c826545adb" width="400" />
+  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/c5e93db1-c95e-45ff-866b-f10952fda8c2" width="400" />
+  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/a1660a46-0a9f-4dd1-8046-968a04a0fc6f" width="400" />
 </div>
 </br>
 
