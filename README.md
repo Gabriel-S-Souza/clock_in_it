@@ -46,3 +46,18 @@ Selecione um dispositivo android ou ios ou selecione o chrome para a versão web
 ```
 flutter run
 ```
+---
+</br>
+<div style="display: flex; justify-content: center;">
+  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/638e1335-aeea-4528-b865-8e54cde1ca76" height="420" />
+  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/86d29588-d25a-4555-a8ff-9d8989e63ffb" height="420" />
+  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/a85a55e4-fc8b-4fe5-a689-d0edea34dfc4" height="420" />
+</div>
+</br>
+<div style="display: flex; justify-content: center;">
+  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/2362e8f1-90cb-4a13-9a28-f6c826545adb" width="500" />
+  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/c5e93db1-c95e-45ff-866b-f10952fda8c2" width="500" />
+  <img src="https://github.com/Gabriel-S-Souza/clock_in_it/assets/94877176/a1660a46-0a9f-4dd1-8046-968a04a0fc6f" width="500" />
+</div>
+</br>
+
