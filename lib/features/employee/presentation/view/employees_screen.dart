@@ -101,6 +101,7 @@ class _EmployeesScreenState extends State<EmployeesScreen> {
                           }
                           return ListView.builder(
                             shrinkWrap: true,
+                            padding: const EdgeInsets.only(bottom: 20),
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: state.employees.length,
                             itemBuilder: (context, index) {

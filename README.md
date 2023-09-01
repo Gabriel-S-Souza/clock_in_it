@@ -19,6 +19,7 @@ Clock In It é um app de estudo que permite aos usuários fazer login, visualiza
 - Testes unitários:
   - Os testes seguem o pattern **Arrange, Act, Assert** e para mocks foi utilizado [**Mockito**](https://pub.dev/packages/mockito)
 - Autenticação com JWT
+- Autenticação com Fingerprint e FaceId
 - Caching com Decorator Pattern
 - Princípios SOLID
 - Injeção de Dependência
